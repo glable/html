@@ -1,0 +1,33 @@
+/*Common*/
+
+body {
+    background: url(../images/bg-body.jpg) no-repeat center top  #000
+}
+
+/*Containers*/
+
+#page {
+    margin: 0px auto;
+    width: 960px;
+}
+
+#header {
+    width: 960px;
+    height: 180px;
+    float: left;
+}
+
+#content {
+    width: 960px;
+    height: 400px;
+    /* Temporal */
+    float: left;
+    background-color: #FCC;
+}
+
+#footer {
+    width: 960px;
+    height: 250px;
+    float: left;
+    background: url(../images/bg-footer.jpg) no-repeat top center;
+}
