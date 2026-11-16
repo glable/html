@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>巷口折 · 周边优惠外卖</title>
+  <meta name="description" content="发现周边外卖优惠：满减、新客立减、折扣券、限时秒杀，自动计算最优凑单。" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.2-4.1 5.8-.8Z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.2 4.2 0 0 1 12 7.2 4.2 4.2 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.5-5.8"/><path d="M20 4.5V10h-5.5"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2.5h-15Z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M4 7h16v3.5a2.5 2.5 0 0 0 0 5V19H4v-3.5a2.5 2.5 0 0 0 0-5Z"/><path d="M13 7v10" stroke-dasharray="2 3"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="巷口折首页">
+        <span class="brand-mark">折</span>
+        <span class="brand-text">
+          <strong>巷口折</strong>
+          <small>NEARBY DEALS</small>
+        </span>
+      </a>
+
+      <div class="top-actions">
+        <div class="loc-wrap">
+          <button id="locBtn" class="loc-btn" aria-haspopup="true" aria-expanded="false">
+            <svg class="ic"><use href="#i-pin" /></svg>
+            <span id="locLabel">上海 · 人民广场</span>
+            <svg class="ic chevron"><use href="#i-chevron" /></svg>
+          </button>
+          <div id="locMenu" class="loc-menu" hidden></div>
+        </div>
+        <span id="sourceBadge" class="source-badge" title="数据来源">演示数据</span>
+        <button id="notifyBtn" class="ghost-btn">
+          <svg class="ic"><use href="#i-bell" /></svg>
+          <span>开启提醒</span>
+        </button>
+        <button id="refreshBtn" class="icon-btn" aria-label="刷新优惠">
+          <svg class="ic"><use href="#i-refresh" /></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">周边 3 公里 · 实时优惠雷达</p>
+        <h1>今晚这顿，<br />吃点<span class="hl">划算</span>的。</h1>
+        <p class="hero-sub">把附近可用的满减、新客立减、折扣券和限时秒杀翻出来，顺手替你算好怎么凑单最省钱。</p>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div class="stub">
+          <span class="stub-label">附近优惠</span>
+          <strong><span id="statCount">--</span><i>家</i></strong>
+        </div>
+        <div class="stub stub-accent">
+          <span class="stub-label">最高可省</span>
+          <strong>¥<span id="statSaving">--</span></strong>
+        </div>
+        <div class="stub">
+          <span class="stub-label">6 小时内结束</span>
+          <strong><span id="statExpiring">--</span><i>个</i></strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="filters" id="filterPanel" aria-label="筛选条件">
+        <div class="panel-head">
+          <span class="panel-no">FILTER / 01</span>
+          <h2>筛一筛</h2>
+          <button id="resetFilters" class="text-btn">重置</button>
+        </div>
+
+        <label class="search-box">
+          <svg class="ic"><use href="#i-search" /></svg>
+          <input id="searchInput" type="search" placeholder="搜商家、菜品、优惠" autocomplete="off" />
+        </label>
+
+        <div class="filter-block">
+          <div class="filter-label"><span>距离范围</span><b id="radiusValue">3.0 km</b></div>
+          <input id="radiusRange" type="range" min="500" max="5000" step="100" value="3000" />
+          <div class="range-scale"><span>500m</span><span>5km</span></div>
+        </div>
+
+        <div class="filter-block">
+          <div class="filter-label"><span>品类</span></div>
+          <div class="cat-grid" id="catGrid"></div>
+        </div>
+
+        <div class="filter-block">
+          <div class="filter-label"><span>优惠类型</span></div>
+          <div class="check-list" id="typeGrid">
+            <label class="check-row"><input type="checkbox" value="full_reduction" /><span>满减</span></label>
+            <label class="check-row"><input type="checkbox" value="new_user" /><span>新客立减</span></label>
+            <label class="check-row"><input type="checkbox" value="voucher" /><span>折扣券</span></label>
+            <label class="check-row"><input type="checkbox" value="flash_sale" /><span>限时秒杀</span></label>
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <div class="filter-label"><span>配送费</span></div>
+          <select id="feeSelect" class="select">
+            <option value="">不限</option>
+            <option value="0">免配送费</option>
+            <option value="2">≤ ¥2</option>
+            <option value="4">≤ ¥4</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <div class="filter-label"><span>最低可省</span><b id="savingValue">¥0</b></div>
+          <input id="savingRange" type="range" min="0" max="40" step="2" value="0" />
+        </div>
+
+        <button id="filterClose" class="filter-close">查看 <span id="filterCount">0</span> 家优惠</button>
+      </aside>
+
+      <section class="list-area">
+        <div class="toolbar">
+          <div class="view-tabs" role="tablist" aria-label="视图切换">
+            <button class="view-tab is-active" data-view="nearby" role="tab" aria-selected="true">附近优惠</button>
+            <button class="view-tab" data-view="favorites" role="tab" aria-selected="false">我的收藏 <b id="favCount">0</b></button>
+            <button class="view-tab" data-view="reminders" role="tab" aria-selected="false">提醒 <b id="remindCount">0</b></button>
+          </div>
+          <button id="filterToggle" class="filter-toggle">
+            <svg class="ic"><use href="#i-sliders" /></svg>
+            筛选
+          </button>
+        </div>
+
+        <div class="sort-row" id="sortRow">
+          <span class="sort-label">排序</span>
+          <button class="sort-chip is-active" data-sort="smart">综合推荐</button>
+          <button class="sort-chip" data-sort="distance">距离最近</button>
+          <button class="sort-chip" data-sort="saving">省得最多</button>
+          <button class="sort-chip" data-sort="rating">评分最高</button>
+          <button class="sort-chip" data-sort="sales">销量最高</button>
+          <span class="result-count" id="resultCount"></span>
+        </div>
+
+        <div id="nearbyPane">
+          <div id="dealGrid" class="deal-grid" aria-live="polite"></div>
+        </div>
+
+        <div id="favoritesPane" class="pane" hidden></div>
+        <div id="remindersPane" class="pane" hidden></div>
+      </section>
+
+      <aside class="rail">
+        <div class="radar-card">
+          <div class="rail-head">
+            <div>
+              <span class="panel-no">RADAR / 02</span>
+              <h2>周边优惠雷达</h2>
+            </div>
+            <span class="live-dot">LIVE</span>
+          </div>
+          <div class="radar-stage" id="radarStage">
+            <div class="radar-ring ring-1"></div>
+            <div class="radar-ring ring-2"></div>
+            <div class="radar-ring ring-3"></div>
+            <div class="radar-cross"></div>
+            <div class="radar-sweep"></div>
+            <div class="radar-center"></div>
+            <div class="radar-dots" id="radarDots"></div>
+          </div>
+          <div class="radar-foot">
+            <span>中心：你的位置</span>
+            <span id="radarRadius">半径 3.0 km</span>
+          </div>
+        </div>
+
+        <div class="expiring-card">
+          <div class="rail-head">
+            <div>
+              <span class="panel-no">CLOSING / 03</span>
+              <h2>快结束的优惠</h2>
+            </div>
+          </div>
+          <div id="expiringList" class="expiring-list"></div>
+        </div>
+
+        <p class="rail-note">演示数据由本地生成，用于展示筛选、排序与凑单逻辑；接入真实平台请配置 <code>DEALS_API_URL</code>。</p>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <span>巷口折 · 周边优惠外卖聚合</span>
+      <span>数据展示仅供功能演示 · 价格与优惠以商家实际页面为准</span>
+    </footer>
+  </main>
+
+  <div id="modalRoot"></div>
+  <div id="toastRoot" class="toasts" aria-live="polite"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
