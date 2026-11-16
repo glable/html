@@ -1,5 +1,7 @@
 'use strict';
 
+const envLoaded = require('./lib/env').loadEnv();
+
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -274,5 +276,6 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`[巷口折] 服务已启动: http://localhost:${PORT}`);
+  console.log(`[巷口折] 配置文件: ${envLoaded ? '.env 已加载' : '未找到 .env，使用系统环境变量'}`);
   console.log(`[巷口折] 数据源: ${process.env.DATA_SOURCE || 'auto'}${process.env.DEALS_API_URL ? ' / ' + process.env.DEALS_API_URL : ' / 内置演示数据'}`);
 });
